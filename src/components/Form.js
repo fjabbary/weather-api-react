@@ -44,7 +44,7 @@ class Form extends Component {
 
         axios.get(url)
             .then(response => {
-                console.log(response)
+                console.log(response.data)
             })
     }
 
@@ -56,7 +56,7 @@ class Form extends Component {
 
         axios.get(url)
             .then(response => {
-                console.log(response)
+                this.props.currentWeather(response.data.data)
             })
     }
 

@@ -1,0 +1,26 @@
+.result {
+    border: 2px solid #ccc;
+    padding: 20px;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+img {
+    width: 45px;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom div {
+    
+    padding: 0 10px;
+    text-align: center;
+    width: 33%;
+}
+
+.bottom div:not(:last-child) {
+    border-right:3px solid #ccc;
+}
