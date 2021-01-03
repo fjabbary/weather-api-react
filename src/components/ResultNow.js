@@ -10,6 +10,7 @@ class Result extends Component {
 
         return (
             <div className="bg-light result">
+                <h5>{cw[0].city_name}</h5>
                 <div>Temperature: {cw[0].temp}&#8451; <img alt="" src={`https://www.weatherbit.io/static/img/icons/${cw[0].weather.icon}.png`} /></div>
                 <div className="bottom">
                     <div>
