@@ -6,7 +6,7 @@ class Form extends Component {
 
     state = {
         city: '',
-        postal: ''
+        error: ''
     }
 
     getTodayDate() {
@@ -36,34 +36,43 @@ class Form extends Component {
         })
     }
 
-    handleHourly = (e) => {
-        e.preventDefault();
-        const api_key = 'a3800d82739d466790523f48e15c3fc0'
+    // handleHourly = (e) => {
+    //     e.preventDefault();
+    //     const api_key = 'a3800d82739d466790523f48e15c3fc0'
 
-        const url = `https://api.weatherbit.io/v2.0/history/hourly?postal_code=${this.state.postal}&city=${this.state.city}&start_date=${this.getYesterdayDate()}&end_date=${this.getTodayDate()}&key=${api_key}`
+    //     const url = `https://api.weatherbit.io/v2.0/history/hourly?postal_code=${this.state.postal}&city=${this.state.city}&start_date=${this.getYesterdayDate()}&end_date=${this.getTodayDate()}&key=${api_key}`
 
-        axios.get(url)
-            .then(response => {
-                console.log(response.data)
-            })
-    }
+    //     axios.get(url)
+    //         .then(response => {
+    //             console.log(response.data)
+    //         })
+    // }
 
     handleNow = (e) => {
         e.preventDefault();
-        const api_key = 'a3800d82739d466790523f48e15c3fc0';
+        const api_key = '4128bbae61aa3ae31a5847c30182bdf1';
 
-        const url = `http://api.weatherbit.io/v2.0/current?key=${api_key}&postal_code=${this.state.postal}&city=${this.state.city}`
+        const url = `http://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`
 
         axios.get(url)
             .then(response => {
-                this.props.currentWeather(response.data.data)
+                this.props.currentWeather(response.data)
+
+                this.setState(({ error: '' }))
+            })
+            .catch(error => {
+                this.props.currentWeather('')
+
+                this.setState({
+                    error: 'Location was not found.'
+                })
             })
     }
-
 
     render() {
         return (
             <div>
+
                 <form className="bg-light">
                     <h3 className="text-danger">Weahter API</h3>
                     <div className="form-group">
@@ -71,14 +80,13 @@ class Form extends Component {
                         <input type="text" className="form-control" id="city" name="city" value={this.state.city} onChange={this.handleChange} />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="postal">Postal/Zip code</label>
-                        <input type="text" className="form-control" id="postal" name="postal" value={this.state.postal} onChange={this.handleChange} />
-                    </div>
 
                     <button className="btn btn-warning mr-5" onClick={this.handleHourly}>Show hourly weather</button>
                     <button className="btn btn-success" onClick={this.handleNow}>Show weather now</button>
+
+                    <p className="text-danger p-3">{this.state.error}</p>
                 </form>
+
             </div>
         );
     }

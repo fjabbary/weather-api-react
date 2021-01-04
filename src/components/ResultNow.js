@@ -3,27 +3,30 @@ import './style/ResultNow.css'
 
 class Result extends Component {
 
+    roundTemp = temp => Math.round(temp)
+
+
     render() {
 
         const { cw } = this.props;
         console.log(cw)
 
         return (
-            <div className="bg-light result">
-                <h5>{cw[0].city_name}</h5>
-                <div>Temperature: {cw[0].temp}&#8451; <img alt="" src={`https://www.weatherbit.io/static/img/icons/${cw[0].weather.icon}.png`} /></div>
+            <div className="result">
+                <div><h3>Temperature: {this.roundTemp(cw.main.temp - 273.15)}&#8451;
+                </h3> <img src={`http://openweathermap.org/img/wn/${cw.weather[0].icon}.png`} alt="" /> </div><br />
                 <div className="bottom">
                     <div>
                         <p><b>Real Feel</b></p>
-                        <p>{cw[0].app_temp}&#8451;</p>
+                        <p>{this.roundTemp(cw.main.feels_like - 273.15)}&#8451;</p>
                     </div>
                     <div>
-                        <p><b>Wind speed</b></p>
-                        <p>{cw[0].wind_spd} m/s</p>
+                        <p><b>Humidity</b></p>
+                        <p>{cw.main.humidity}%</p>
                     </div>
                     <div>
                         <p><b>Weather condition</b></p>
-                        <p>{cw[0].weather.description}</p>
+                        <p>{cw.weather[0].description}</p>
                     </div>
 
                 </div>
