@@ -6,29 +6,12 @@ class Form extends Component {
 
     state = {
         city: '',
-        error: ''
+        error: '',
+        api_key: '2b6796993859f84b8808fad453263671',
+        lon: '',
+        lat: ''
     }
 
-    getTodayDate() {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
-
-        return today
-    }
-
-    getYesterdayDate() {
-        var yesterday = new Date(Date.now() - 86400000);
-        var dd = String(yesterday.getDate()).padStart(2, '0');
-        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = yesterday.getFullYear();
-
-        yesterday = yyyy + '-' + mm + '-' + dd;
-        return yesterday
-    }
 
     handleChange = (e) => {
         this.setState({
@@ -36,29 +19,40 @@ class Form extends Component {
         })
     }
 
-    // handleHourly = (e) => {
-    //     e.preventDefault();
-    //     const api_key = 'a3800d82739d466790523f48e15c3fc0'
+    handleForecast = async (e) => {
+        e.preventDefault();
+        const { api_key, lon, lat } = this.state;
 
-    //     const url = `https://api.weatherbit.io/v2.0/history/hourly?postal_code=${this.state.postal}&city=${this.state.city}&start_date=${this.getYesterdayDate()}&end_date=${this.getTodayDate()}&key=${api_key}`
+        const forecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${api_key}`
 
-    //     axios.get(url)
-    //         .then(response => {
-    //             console.log(response.data)
-    //         })
-    // }
+        const response = await axios.get(forecastURL)
+        console.log(response)
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { city, api_key } = this.state;
+        const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`
+        if (prevState.city !== this.state.city) {
+            axios.get(url).
+                then(res => {
+                    this.setState({ lon: res.data.coord.lon, lat: res.data.coord.lat })
+                }
+                ).catch(console.clear())
+        }
+
+    }
+
 
     handleNow = (e) => {
         e.preventDefault();
-        const api_key = '4128bbae61aa3ae31a5847c30182bdf1';
 
-        const url = `http://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`
-
+        const url = `http://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${this.state.api_key}`
         axios.get(url)
             .then(response => {
                 this.props.currentWeather(response.data)
 
-                this.setState(({ error: '' }))
+                this.setState({ error: '' })
             })
             .catch(error => {
                 this.props.currentWeather('')
@@ -81,7 +75,7 @@ class Form extends Component {
                     </div>
 
 
-                    <button className="btn btn-warning mr-5" onClick={this.handleHourly}>Show hourly weather</button>
+                    <button className="btn btn-warning mr-5" onClick={this.handleForecast}>Show Daily weather</button>
                     <button className="btn btn-success" onClick={this.handleNow}>Show weather now</button>
 
                     <p className="text-danger p-3">{this.state.error}</p>

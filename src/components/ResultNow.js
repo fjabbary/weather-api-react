@@ -13,6 +13,7 @@ class Result extends Component {
 
         return (
             <div className="result">
+                <h2 className="text-success">Result for {cw.name}</h2>
                 <div><h3>Temperature: {this.roundTemp(cw.main.temp - 273.15)}&#8451;
                 </h3> <img src={`http://openweathermap.org/img/wn/${cw.weather[0].icon}.png`} alt="" /> </div><br />
                 <div className="bottom">
