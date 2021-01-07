@@ -12,7 +12,6 @@ class Form extends Component {
         lat: ''
     }
 
-
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -26,7 +25,7 @@ class Form extends Component {
         const forecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${api_key}`
 
         const response = await axios.get(forecastURL)
-        console.log(response)
+        this.props.weatherForecast(response.data);
 
     }
 
@@ -75,7 +74,7 @@ class Form extends Component {
                     </div>
 
 
-                    <button className="btn btn-warning mr-5" onClick={this.handleForecast}>Show Daily weather</button>
+                    <button className="btn btn-warning mr-5" onClick={this.handleForecast}>Show Forecast weather</button>
                     <button className="btn btn-success" onClick={this.handleNow}>Show weather now</button>
 
                     <p className="text-danger p-3">{this.state.error}</p>
