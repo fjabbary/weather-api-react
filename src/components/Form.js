@@ -33,8 +33,8 @@ class Form extends Component {
         const { city, api_key } = this.state;
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`
         if (prevState.city !== this.state.city) {
-            axios.get(url).
-                then(res => {
+            axios.get(url)
+                .then(res => {
                     this.setState({ lon: res.data.coord.lon, lat: res.data.coord.lat })
                 }
                 ).catch(console.clear())
@@ -69,8 +69,8 @@ class Form extends Component {
                 <form className="bg-light">
                     <h3 className="text-danger">Weahter API</h3>
                     <div className="form-group">
-                        <label htmlFor="city">City</label>
-                        <input type="text" className="form-control" id="city" name="city" value={this.state.city} onChange={this.handleChange} />
+
+                        <input type="text" className="form-control" id="city" name="city" value={this.state.city} onChange={this.handleChange} placeholder="Enter city name" />
                     </div>
 
 

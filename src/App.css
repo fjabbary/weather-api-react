@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.apexcharts-toolbar {
+  display: none !important;
+}
+
+.row {
+  justify-content: center !important;
+}

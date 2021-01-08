@@ -8,15 +8,33 @@ class ForecastResult extends Component {
     state = {
         options: {
             chart: {
-                id: "basic-bar"
+                id: "basic-bar",
+                height: 25
             },
             xaxis: {
-                categories: null
+                categories: null,
+                title: {
+                    text: "Temperature in the next 7 days"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Temperature °C"
+                }
+            },
+            markers: {
+                size: 5
+            },
+            dataLabels: {
+                enabled: true,
+            },
+            stroke: {
+                curve: 'smooth',
             }
         },
         series: [
             {
-                name: "series-1",
+                name: "",
                 data: []
             }
         ]
@@ -31,7 +49,7 @@ class ForecastResult extends Component {
             },
             series: [
                 {
-                    name: "series-1",
+                    name: "",
                     data: this.props.forecastData.daily ? this.props.forecastData.daily.map(item => (item.temp.day - 273.15).toFixed(1)) : []
                 }
             ]
@@ -39,10 +57,6 @@ class ForecastResult extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-
-        console.log(prevProps)
-        console.log(this.props)
-
         if (prevProps.forecastData.lat !== this.props.forecastData.lat) {
             this.setState({
                 options: {
@@ -52,7 +66,7 @@ class ForecastResult extends Component {
                 },
                 series: [
                     {
-                        name: "series-1",
+                        name: " ",
                         data: this.props.forecastData.daily ? this.props.forecastData.daily.map(item => (item.temp.day - 273.15).toFixed(1)) : []
                     }
                 ]
@@ -64,26 +78,23 @@ class ForecastResult extends Component {
     timeConverter(UNIX_timestamp) {
         const a = new Date(UNIX_timestamp * 1000);
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const year = a.getFullYear();
+        // const year = a.getFullYear();
         const month = months[a.getMonth()];
         const date = a.getDate();
-        var hour = a.getHours();
-        var min = a.getMinutes();
-        var sec = a.getSeconds();
+        // var hour = a.getHours();
+        // var min = a.getMinutes();
+        // var sec = a.getSeconds();
         var time = date + ' ' + month;
         return time;
     }
 
     render() {
         const dailyArr = this.props.forecastData.daily;
-        console.log(dailyArr)
-
-        console.log(this.props.forecastData)
 
         return (
             <div>
 
-                <div className="row">
+                <div className="row mt-5">
                     <div className="mixed-chart">
                         <Chart
                             options={this.state.options}
@@ -91,6 +102,7 @@ class ForecastResult extends Component {
                             type="line"
                             width="500"
                         />
+
                     </div>
                 </div>
 
